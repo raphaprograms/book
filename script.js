@@ -10,14 +10,14 @@ function Book(title, author, pages, read) {
     this.pages = pages;
     this.read = read;
     this.info = function () {
-        return `${this.title} by ${author}, ${pages} pages, ${read}.`;
+        return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}.`;
     }
 }
 
 function addBookToLibrary(title, author, pages, read) {
     const newBook = new Book(title, author, pages, read);
     myLibrary.push(newBook);
-    return myLibrary;
+    return newBook;
 
 }
 const container = document.querySelector('.container');
@@ -28,6 +28,8 @@ container.appendChild(clicktoAddBtn);
 
 const form = document.createElement('form');
 form.style.display = 'none';
+form.style.flexDirection = 'column';
+form.style.gap = '0.5em';
 
 const titleInput = document.createElement('input');
 titleInput.type = 'text';
@@ -35,18 +37,47 @@ titleInput.name = 'title';
 titleInput.placeholder = 'Title';
 titleInput.required = true;
 
+const authorInput = document.createElement('input');
+authorInput.type = 'text';
+authorInput.name = 'author';
+authorInput.placeholder = 'Author';
+authorInput.required = true;
+
+const pagesInput = document.createElement('input');
+pagesInput.type = 'number';
+pagesInput.name = 'pages';
+pagesInput.placeholder = 'Pages';
+pagesInput.required = true;
+
+const selectRead = document.createElement('select');
+selectRead.name = 'read';
+selectRead.required = true;
+
+const op1 = document.createElement('option');
+op1.value = 'not read yet';
+op1.textContent = 'Not Read Yet';
+
+const op2 = document.createElement('option');
+op2.value = 'read';
+op2.textContent = 'Read';
+
+selectRead.appendChild(op1);
+selectRead.appendChild(op2);
+
+
 const addBookBtn = document.createElement('button');
 addBookBtn.type = 'submit';
 addBookBtn.textContent = 'Add Book';
-form.appendChild(addBookBtn);
 
 form.appendChild(titleInput);
-container.appendChild(form);
+form.appendChild(authorInput);
+form.appendChild(pagesInput);
+form.appendChild(selectRead);
+form.appendChild(addBookBtn)
+;container.appendChild(form);
 
 clicktoAddBtn.addEventListener('click', () => {
     form.style.display = 'flex';
-    form.style.flexWrap = 'wrap';
-    form.styly.gap = '0.5em';
     clicktoAddBtn.style.display = 'none';
 });
 
@@ -54,9 +85,9 @@ form.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const title = titleInput.value;
-    const author = 'author';
-    const pages = 'pages';
-    const read = 'read';
+    const author = authorInput.value;
+    const pages = pagesInput.value;
+    const read = selectRead.value;
 
     const newBook = addBookToLibrary(title, author, pages, read);
     displayBook(newBook);
@@ -68,19 +99,18 @@ form.addEventListener('submit', function (e) {
 
 
 function displayBook(book) {
-    let book = myLibrary[myLibrary.length - 1];
 
     let bookCard = document.createElement('div');
     bookCard.classList.add('book-card');
     bookCard.dataset.id = book.id;
 
-    const cardInfo = document.createElement('div');
+    const cardInfo = document.createElement('p');
     cardInfo.textContent = book.info();
 
     const toggleReadBtn = document.createElement('button');
     toggleReadBtn.textContent = 'Read / Not Read';
     toggleReadBtn.addEventListener('click', () => {
-        toggleReadBtn.textContent = 'hmmmm'
+        book.read = (book.read === 'read') ? 'not read yet' : 'read';
         cardInfo.textContent = book.info();
     });
 
@@ -89,26 +119,10 @@ function displayBook(book) {
     deleteBtn.addEventListener('click', () => {
         bookCard.remove();
         myLibrary = myLibrary.filter(b => b.id !== book.id);
-    })
+    });
+
     bookCard.appendChild(cardInfo);
     bookCard.appendChild(toggleReadBtn);
     bookCard.appendChild(deleteBtn);
-
     container.appendChild(bookCard);
 }
-
-
-
-
-
-displayBook('Harry Potter', 'J.K. Rowland', '500', 'has been read');
-console.log(myLibrary);
-
-
-
-
-/* const book1 = new Book('Harry Potter', 'J.K. Rowland', '500', 'has been read'); 
-
-console.log(book1.info());
-
-console.log(Object.getPrototypeOf(book1) === Book.prototype); */
