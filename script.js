@@ -21,10 +21,11 @@ function addBookToLibrary(title, author, pages, read) {
 
 }
 
-/*addBookToLibrary('Harry Potter', 'J.K. Rowland', '500', 'has been read');
-console.log(myLibrary); */
-
 let container = document.querySelector('.container');
+let clicktoAddBtn = document.createElement('button')
+clicktoAddBtn.textContent = 'Click ME to Add a Book';
+container.appendChild(clicktoAddBtn);
+
 
 function displayBook(title, author, pages, read) {
     addBookToLibrary(title, author, pages, read);
@@ -32,11 +33,18 @@ function displayBook(title, author, pages, read) {
 
     let bookCard = document.createElement('div');
     bookCard.textContent = book.info(),
+    bookCard.classList.add('book-card');
     container.appendChild(bookCard);
 }
 
+
+
+
+
 displayBook('Harry Potter', 'J.K. Rowland', '500', 'has been read');
 console.log(myLibrary);
+
+
 
 
 /* const book1 = new Book('Harry Potter', 'J.K. Rowland', '500', 'has been read'); 
